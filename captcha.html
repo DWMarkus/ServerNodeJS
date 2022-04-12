@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Captcha</title>
+    
+</head>    
+    
+<body onload="resetCanvas()">
+    <h1>Captcha</h1>
+
+    <form method="post" action="" onsubmit="return checkform(this);">
+        <div id="container">
+
+            <div id="flag">
+            <p id="message"></p> 
+            </div>
+
+            <input class="actualiserButton" type="button" onclick='window.location.reload(false)' value="Actualiser">
+
+            <div id="cap">
+            <canvas id="canvas" width="400px" height="100px">   </canvas>
+            </div>
+                    <p id="info">Saisir les caractères ci-dessus et puis Valider</p>
+
+                    <input type="hidden" id="genCaptcha">
+                    <input type="text"  id="input" maxlength="4" name="input">
+
+                    <input id="submit" type="submit" value="Valider" required>
+            </div>
+        </div>
+    </form>
+
+</body>
+
+
+<script type="text/javascript">
+    // Script js
+
+
+    function checkform(theform){
+        var raison = "";
+
+        if(theform.input.value == ""){
+            raison += "Le captcha n'a pas été saisie.\n";
+            }
+        
+        if(theform.input.value != ""){
+            if(ValidCaptcha(theform.input.value) == false){
+                raison += "Erreur, le code ne correspond pas.\n";
+                }
+            }
+        
+        if(raison != ""){
+            document.getElementById('message').innerHTML = raison;
+            return false;
+            }
+    }
+
+    var canva = document.getElementById("canvas");
+    var ctx = canva.getContext("2d");
+    var nb = [];
+
+    // Ajoute de l'espace entre les chiffres, par défaut
+    var horizon = [80,180,280,380];
+    var vertical = [95,95,95,95];
+
+    // fonction généré nombres
+    function genererNb() {
+        nb[0] = Math.floor(Math.random() * 9);
+        nb[1] = Math.floor(Math.random() * 9);
+        nb[2] = Math.floor(Math.random() * 9);
+        nb[3] = Math.floor(Math.random() * 9);
+        
+        strg = nb.toString().replaceAll(',', '');
+        console.log(strg);
+        return strg;
+    }
+
+    //Deplace les nombres à l'horizontale
+    function horizontale() {
+        horizon[0] = Math.random() * (80 - 10) + 10;
+        horizon[1] = Math.random() * (180 - 100) + 100;
+        horizon[2] = Math.random() * (280 - 200) + 200;
+        horizon[3] = Math.random() * (370 - 300) + 300;
+    };
+    
+    // Deplace les nombres à la verticale
+    function verticale() {
+        vertical[0] = Math.random() * (95 - 30) + 30;
+        vertical[1] = Math.random() * (95 - 30) + 30;
+        vertical[2] = Math.random() * (95 - 30) + 30;
+        vertical[3] = Math.random() * (95 - 30) + 30;
+    };
+
+    // Affiche les nombres générés pour le captcha
+    function afficheCaptcha() {
+        ctx.font = " italic 30px Arial";
+        ctx.fillStyle = "#7491A8";
+        ctx.fillText(nb[0],horizon[0],vertical[0]);
+        ctx.fillText(nb[1],horizon[1],vertical[1]);
+        ctx.fillText(nb[2],horizon[2],vertical[2]);
+        ctx.fillText(nb[3],horizon[3],vertical[3]);
+    };
+
+    // Pour reset le canvas
+    function resetCanvas() { 
+        genererNb();
+        verticale();
+        horizontale();
+        afficheCaptcha();
+    };
+
+    // VIde le canvas lorsqu'une saisie à été validée
+    function clear() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        $("#input").val("");
+    };
+
+    // Fonction pour le bouton actualiser
+    function actualiser() {
+        clear();
+        resetCanvas();
+    }
+
+    function ValidCaptcha(){
+    var str1 = strg;
+    var str2 = document.getElementById('input').value;
+    
+        if (str1 == str2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+</script>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html style="text-align: center;"> <title>OnOff</title>
+
+<div>
+    <button type="button" id="on" onclick='Allumer()'>On</button>
+    <button type="button" id="off" onclick="Eteindre()">Off</button>
+</div>
+
+<div id="ampoff">
+    <p><img src="https://s3-eu-west-1.amazonaws.com/darwinjocelyn/ampouleoff.jpg" /></p>
+</div>
+
+<div id="ampon" style="display: none;">
+    <p><img src="https://s3-eu-west-1.amazonaws.com/darwinjocelyn/ampouleon.jpg" /></p>
+</div>
+
+<script type="text/javascript">
+
+function Allumer() {
+    document.getElementById('ampoff').style.display='none', 
+    document.getElementById('ampon').style.display='block';
+  }
+
+function Eteindre() {
+  document.getElementById('ampon').style.display='none', 
+  document.getElementById('ampoff').style.display='block';
+}
+
+</script>
+
+</html>
